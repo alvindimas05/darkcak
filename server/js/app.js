@@ -2,11 +2,13 @@ const express = require("express"),
 bodyParser = require("body-parser"),
 fileUpload = require("express-fileupload"),
 cookieParser = require("cookie-parser"),
+cors = require("cors"),
 
 app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
+app.use(cors());
 app.use(cookieParser());
 app.use(fileUpload({ limits:{ fileSize:5 * 1024 * 1024 } }));
 

@@ -55,7 +55,7 @@ export default function Nav(){
     <nav className="nav bg-dark text-light">
         <div className="container d-flex align-items-center my-2 px-3">
             <a className="navbar-brand fs-5" href="/">Darkcak</a>
-            <i className="fa fa-list ms-auto fa-xl" onClick={list_click}></i>
+            <i className="fa fa-list ms-auto" onClick={list_click}></i>
         </div>
         <div className="container bg-dark m-0 px-0" id="nav-list" style={{ display:display }}>
             {nav_list(status)}

@@ -1,9 +1,13 @@
-import Nav from  "./pages/nav";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Index from "./pages/index";
 
 export default function App(){
   return(
-    <>
-      {Nav()}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
