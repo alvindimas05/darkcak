@@ -33,10 +33,3 @@ app.post("/api/post/fek", fek.post);
 app.get("/api/post/fek", fek.get);
 
 app.get("/api/post/user", puser);
-
-app.get("/s/:id", (req, res) => res.redirect("/?search=" + req.params.id));
-app.get("/p/:id", (req, res) => res.redirect("/?page=" + req.params.id));
-app.get("/p/:pid/s/:sid", (req, res) => res.redirect(`/?page=${req.params.pid}&search=${req.params.sid}`))
-app.get("/s/:sid/p/:pid", (req, res) => res.redirect(`/?page=${req.params.pid}&search=${req.params.sid}`))
-
-app.get("/u/:id", (req, res) => res.redirect("/u/?username=" + req.params.id));

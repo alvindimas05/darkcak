@@ -1,3 +1,5 @@
 const app = require("./js/app");
 
-app.listen(8080, "0.0.0.0", () => console.log("Listening on 8080"));
+require("./api");
+
+app.listen(8080, () => console.log("Listening on 8080"));

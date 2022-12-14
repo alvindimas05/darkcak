@@ -7,24 +7,25 @@ import Result from "../modules/result/result";
 import "./css/index.css";
 
 export default function Index(){
-    const [data, setData] = useState(null);
+    const [elements, setElements] = useState(null);
 
     useEffect(() => {
         (async () => {
-            var res = await axios.get(`http://localhost:8080/api/post?page=1&title=`);
-            setData(res.data);
+            var base_url = "http://localhost:8080",
+            
+            post = await axios.get(base_url + "/api/post?page=1&title="),
+            rill = await axios.get(base_url + "/api/post/rill?user_id=Lv1pY48mJ0naaBAiLFhz"),
+            fek = await axios.get(base_url + "/api/post/fek?user_id=Lv1pY48mJ0naaBAiLFhz");
+            
+            setElements(Result(post.data, rill.data, fek.data));
         })();
     }, []);
 
     return(
         <>
             {Nav()}
-            <div className="container p-2" style={{ whiteSpace:"normal" }}>
-                {data ? 
-                    (data.data.map(Result))
-                    : 
-                    (<h5>No posts...</h5>)
-                }
+            <div className="container p-2">
+                {elements ? elements : (<h5>No posts...</h5>)}
             </div>
         </>
     );

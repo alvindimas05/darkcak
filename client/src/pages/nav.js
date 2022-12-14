@@ -1,10 +1,9 @@
 //import axios from "axios";
-import { useState, useRef} from "react";
+import { useState } from "react";
 import "./css/nav.css";
 
 export default function Nav(){
-    const [ display, setDisplay ] = useState("none"),
-    btnRef = useRef();
+    const [ display, setDisplay ] = useState("none");
 
     function list_click(){
         if(display === "none") setDisplay("block");
@@ -22,13 +21,13 @@ export default function Nav(){
                 <div className="btn-list py-2 px-3" onClick={a_href}>
                     <a href={"/u?username" + status.username}>Your Posts</a>
                 </div>
-                <div className="btn-list py-2 px-3" ref={btnRef}>
+                <div className="btn-list py-2 px-3" onClick={a_href}>
                     <a href="/profile">Profile</a>
                 </div>
-                <div className="btn-list py-2 px-3" ref={btnRef}>
+                <div className="btn-list py-2 px-3" onClick={a_href}>
                     <a href="/upload">Upload</a>
                 </div>
-                <div className="btn-list py-2 px-3" ref={btnRef}>
+                <div className="btn-list py-2 px-3" onClick={a_href}>
                     <a href="/logout">Log out</a>
                 </div>
             </div>
@@ -36,10 +35,10 @@ export default function Nav(){
         } else {
             return(
                 <div>
-                    <div className="btn-list py-2 px-3" ref={btnRef}>
+                    <div className="btn-list py-2 px-3" onClick={a_href}>
                         <a href="/login">Log in</a>
                     </div>
-                    <div className="btn-list py-2 px-3" ref={btnRef}>
+                    <div className="btn-list py-2 px-3" onClick={a_href}>
                         <a href="/register">Register</a>
                     </div>
                 </div>
