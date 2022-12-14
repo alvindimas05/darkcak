@@ -1,6 +1,9 @@
 import { useState } from "react";
 
 function Reply(rep, i){
+    rep = rep.reply;
+    console.log(rep);
+
     return(
         <div className="comment-reply" key={i}>
             <a href={"/u/" + rep.username}><span className="comment-by">{rep.username}</span></a>
@@ -8,11 +11,12 @@ function Reply(rep, i){
             <span className="comment-date">{rep.time}</span>
             <p className="comment-value mb-0">{rep.comment}</p>
         </div>
-    )
+    );
 }
 
 export default function Show(props){
-    var dat = props.dat,
+    var single = props.single, 
+    dat = single ? props.dat : props.dat.comments,
     elements = [];
 
     const [display, setDisplay] = useState("none");
@@ -21,9 +25,9 @@ export default function Show(props){
         else setDisplay("none");
     }
     
-    if(dat.comments.length > 0){
+    if(dat.length > 0){
         elements.push(
-            dat.comments.map((com, i) => (
+            dat.map((com, i) => (
                 <div className="comment" key={i}>
                     <a href={"/u/" + com.username}>
                         <span className="comment-by">{com.username}</span>
@@ -41,13 +45,13 @@ export default function Show(props){
                         </span>
                     </div>
                     <div className="comments-reply" style={{ display:display }}>
-                        {com.reply.map(Reply)}
+                        {props.reply.map(Reply)}
                     </div>
                 </div>
             ))
         );
         return elements;
     } else {
-        return <h6 className="no-comment">No comments yet...</h6>;
+        if(!single) return <h6 className="no-comment">No comments yet...</h6>;
     }
 }

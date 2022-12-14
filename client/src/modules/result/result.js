@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Show from "./show";
 import { Fek, Rill } from "./rill_fek";
+import Send from "./comment";
 
 function Res(props){
     var dat = props.dat;
@@ -10,7 +11,12 @@ function Res(props){
     [rill, setRill] = useState(props.rill ? "lime" : "#fff"),
     [fek, setFek] = useState(props.fake ? "red" : "#fff"),
     [rval, setRval] = useState(dat.rill),
-    [fval, setFval] = useState(dat.fek);
+    [fval, setFval] = useState(dat.fek),
+
+    [ucom, setUcom] = useState([]),
+    [comment, setComment] = useState(""),
+    [reply, setReply] = useState(dat.comments),
+    [idrep, setIdrep] = useState(0);
 
     function btn_comment(){
         if(display === "none") setDisplay("block");
@@ -29,11 +35,11 @@ function Res(props){
                     &nbsp;
                     <span className="post-date">{dat.time}</span>
                 </div>
-                <button className="btn btn-dark btn-rill" onClick={async () => await Rill(props.id, rill, setRill, rval, setRval)} style={{ color:rill }}>
+                <button className="btn btn-dark btn-rill" onClick={async () => await Rill(dat.post_id, rill, setRill, rval, setRval)} style={{ color:rill }}>
                     <i className="fa fa-thumbs-up"/> Rill
                 </button>
                 &nbsp;
-                <button className="btn btn-dark btn-fek" onClick={async () => await Fek(props.id, fek, setFek, fval, setFval)} style={{ color:fek }}>
+                <button className="btn btn-dark btn-fek" onClick={async () => await Fek(dat.post_id, fek, setFek, fval, setFval)} style={{ color:fek }}>
                     <i className="fa fa-thumbs-down"/> Fek
                 </button>
                 &nbsp;
@@ -45,11 +51,13 @@ function Res(props){
                 </p>
             </div>
             <div className="comments py-1" style={{ display:display }}>
-                <Show dat={dat}/>
+                <Show dat={dat} reply={reply}/>
+                <Show dat={ucom} single={true}/>
                 <div className="row gx-2 mt-2">
-                    <input placeholder="Comment" type="text" className="col-9 comment-input"/>
+                    <input placeholder="Comment" type="text" value={comment} onInput={e => setComment(e.target.value)} className="col-9 comment-input"/>
                     <div className="col-3" align="center">
-                        <button post-id={dat.post_id} replying="0" className="btn btn-dark px-3 comment-send">Send</button>
+                        <button idrep={idrep} onClick={async e => Send(dat.post_id, comment, ucom, setUcom, setComment, setReply)}
+                        className="btn btn-dark px-3 comment-send">Send</button>
                     </div>
                 </div>
             </div>
@@ -64,7 +72,7 @@ export default function Result(data, rill, fek){
         var ractive = rill.indexOf(dat.post_id) !== -1 ? true : false,
         factive = fek.indexOf(dat.post_id) !== -1 ? true : false;
 
-        return elements.push(<Res dat={dat} rill={ractive} fek={factive} id={dat.post_id} key={dat.post_id}/>);
+        return elements.push(<Res dat={dat} rill={ractive} fek={factive} key={dat.post_id}/>);
     });
     return elements;
 }
