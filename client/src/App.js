@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Index from "./pages/index";
+import Main from "./pages/Main";
 
 export default function App(){
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index/>}/>
+        <Route path="/" element={<Main/>}/>
       </Routes>
     </BrowserRouter>
   )
