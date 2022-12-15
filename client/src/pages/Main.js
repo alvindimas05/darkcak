@@ -14,8 +14,8 @@ export default function Main(){
         if(!done) (async () => {
             var base_url = "http://localhost:8080",
             posts = await axios.get(base_url + "/api/post?page=1&title="),
-            rill = await axios.get(base_url + "/api/post/rill?user_id=Lv1pY48mJ0naaBAiLFhz"),
-            fek = await axios.get(base_url + "/api/post/fek?user_id=Lv1pY48mJ0naaBAiLFhz");
+            rill = await axios.get(base_url + "/api/post/rill"),
+            fek = await axios.get(base_url + "/api/post/fek");
 
             setData(posts.data.data.map(post => {
                 if(rill.data.indexOf(post.post_id) !== -1) post.rcol = true;

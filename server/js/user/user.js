@@ -57,9 +57,12 @@ async function create(req, res){
         fek:[]
     }).save();
 
-    res.cookie("user_id", id, { maxAge:12 * 30 * 24 * 3600 * 1000 });
+    res.cookie("user_id", id, {
+        httpOnly:true,
+        maxAge:12 * 30 * 24 * 3600 * 1000
+    });
     res.cookie("username", body.username, { maxAge:12 * 30 * 24 * 3600 * 1000 });
-    res.json({ status:true, id:id });
+    res.json({ status:true });
 }
 /**
  * Fungsi untuk melakukan login
@@ -79,7 +82,10 @@ async function login(req, res){
     });
 
     if(result){
-        res.cookie("user_id", result.user_id, { maxAge:12 * 30 * 24 * 3600 * 1000 });
+        res.cookie("user_id", result.user_id, {
+            httpOnly:true,
+            maxAge:12 * 30 * 24 * 3600 * 1000
+        });
         res.cookie("username", result.username, { maxAge:12 * 30 * 24 * 3600 * 1000 });
     }
 

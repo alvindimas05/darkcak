@@ -1,10 +1,7 @@
 import axios from "axios";
 
 export async function Rill(id, data, setData){
-    await axios.post("http://localhost:8080/api/post/rill", {
-        user_id:"Lv1pY48mJ0naaBAiLFhz",
-        post_id:id
-    });
+    await axios.post("http://localhost:8080/api/post/rill", { post_id:id });
 
     setData(data.map(dat => {
         if(dat.post_id === id){
@@ -22,10 +19,7 @@ export async function Rill(id, data, setData){
 }
 
 export async function Fek(id, data, setData){
-    await axios.post("http://localhost:8080/api/post/fek", {
-        user_id:"Lv1pY48mJ0naaBAiLFhz",
-        post_id:id
-    });
+    await axios.post("http://localhost:8080/api/post/fek", { post_id:id });
 
     setData(data.map(dat => {
         if(dat.post_id === id){

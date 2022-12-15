@@ -8,12 +8,13 @@ const { User, Post } = require("../mongoose.js");
 
  async function post(req, res){
     var body = req.body,
-    params = ["user_id", "post_id"].check(body);
+    params = ["post_id"].check(body);
 
-    if(!params) return res.err(null);
+    if(!params || !req.cookies.user_id) return res.err(null);
 
-    var user = await User.findOne({
-        user_id:body.user_id
+    var cookies = req.cookies;
+    user = await User.findOne({
+        user_id:cookies.user_id
     }).select({ rill:1 });
 
     if(!user) return res.err(null);
@@ -27,7 +28,7 @@ const { User, Post } = require("../mongoose.js");
     user = user.rill.indexOf(body.post_id);
     if(user === -1){
         await User.updateOne({
-            user_id:body.user_id
+            user_id:cookies.user_id
         }, {
             $push:{ rill:body.post_id }
         });
@@ -38,7 +39,7 @@ const { User, Post } = require("../mongoose.js");
         });
     } else {
         await User.updateOne({
-            user_id:body.user_id
+            user_id:cookies.user_id
         }, {
             $pull:{ rill:body.post_id }
         });
@@ -54,22 +55,20 @@ const { User, Post } = require("../mongoose.js");
 /**
  * Fungsi untuk mengambil rill user
  * 
- * Body : user_id
+ * Body : -
  * Response : rill : [ post_id ]
  */
 async function get(req, res){
-    var query = req.query,
-    params = ["user_id"].check(query);
+    if(!req.cookies.user_id) return res.err(null);
 
-    if(!params) return res.err(null);
-
-    var user = await User.findOne({
-        user_id:query.user_id
+    var cookies = req.cookies,
+    user = await User.findOne({
+        user_id:cookies.user_id
     });
 
     if(!user) return res.err(null);
 
-    var rill = await User.findOne({ user_id:query.user_id }).select({ rill:1, _id:0 });
+    var rill = await User.findOne({ user_id:cookies.user_id }).select({ rill:1, _id:0 });
 
     res.json(rill.rill);
 }
