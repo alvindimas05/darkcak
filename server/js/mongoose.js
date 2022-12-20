@@ -11,6 +11,8 @@ const userSchema = mongoose.Schema({
         data:Buffer,
         contentType:String
     },
+    nsfw:Boolean,
+    gore:Boolean,
     description:String,
     time:Number,
     rill:Array,
@@ -26,6 +28,7 @@ postSchema = mongoose.Schema({
         data:Buffer,
         contentType:String
     },
+    category:Array,
     time:Number,
     rill:Number,
     fek:Number,

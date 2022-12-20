@@ -4,6 +4,9 @@ user = require("./js/user/user"),
 profile = require("./js/user/profile"),
 logout = require("./js/user/logout"),
 
+nsfw = require("./js/user/nsfw gore").nsfw,
+gore = require("./js/user/nsfw gore").gore,
+
 post = require("./js/posts/post"),
 rill = require("./js/posts/rill")
 fek = require("./js/posts/fek"),
@@ -15,10 +18,13 @@ puser = require("./js/posts/user");
 
 app.post("/api/user/create", user.create);
 app.post("/api/user/login", user.login);
-app.get("/logout", logout);
+app.get("/api/user/logout", logout);
 
 app.get("/api/user/profile", profile.get);
 app.post("/api/user/profile", profile.post);
+
+app.post("/api/user/nsfw", nsfw);
+app.post("/api/user/gore", gore);
 
 app.get("/api/post", post.get);
 app.post("/api/post/create", post.create);

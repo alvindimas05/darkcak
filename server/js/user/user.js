@@ -43,7 +43,7 @@ async function create(req, res){
     var id = randstring(),
     time = Math.round(Date.now() / 1000);
     
-    new User({
+    await new User({
         user_id:id,
         username:body.username,
         password:body.password,
@@ -52,6 +52,8 @@ async function create(req, res){
             contentType:null
         },
         description:null,
+        nsfw:false,
+        gore:false,
         time:time,
         rill:[],
         fek:[]
@@ -61,8 +63,7 @@ async function create(req, res){
         httpOnly:true,
         maxAge:12 * 30 * 24 * 3600 * 1000
     });
-    res.cookie("username", body.username, { maxAge:12 * 30 * 24 * 3600 * 1000 });
-    res.json({ status:true });
+    res.json({ status:true, username:body.username });
 }
 /**
  * Fungsi untuk melakukan login
@@ -86,10 +87,8 @@ async function login(req, res){
             httpOnly:true,
             maxAge:12 * 30 * 24 * 3600 * 1000
         });
-        res.cookie("username", result.username, { maxAge:12 * 30 * 24 * 3600 * 1000 });
-    }
-
-    res.json({ status:!!result });
+        res.json({ status:!!result, username:result.username });
+    } else res.json({ status:!!result });
 }
 
 module.exports = {

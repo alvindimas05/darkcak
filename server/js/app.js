@@ -8,8 +8,8 @@ app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
-app.use(cors({ credentials:true, origin:"http://localhost:3000" }));
 app.use(cookieParser());
+app.use(cors({ credentials:true, origin:"http://localhost:3000" }));
 app.use(fileUpload({ limits:{ fileSize:5 * 1024 * 1024 } }));
 
 app.use("/css", express.static("public/css"));

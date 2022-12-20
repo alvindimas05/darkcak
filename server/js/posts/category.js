@@ -1,16 +1,29 @@
-const { Post, User } = require("../mongoose"),
+const { Post } = require("../mongoose"),
 getTime = require("../time");
 
-module.exports = async function(req, res){
-    var query = req.query,
-    params = ["page", "username"].check(query);
+var category = [
+    "meme",
+    "politic",
+    "news",
+    "anime",
+    "korean",
+    "game",
+    "encyclopedia",
+    "comic",
+    "ask",
+    "sport",
+    "animals",
+    "nsfw",
+    "gore"
+];
 
-    if(!params) return res.err(null);
+async function get(req, res){
+    var body = req.body,
+    params = ["category"].check(body);
 
-    // var page = await Post.find({ username:query.username }).select({ post_id:1 });
-    // page = page.length + 10 - (query.page * 10);
-    var options = { username:query.username };
+    if(!params || !Array.isArray(body.category)) return res.err(null);
 
+    var options = { category:{ $in:body.category } };
     if(req.cookies){
         var user = await User.findOne({ user_id:req.cookies.user_id });
         if(user){
@@ -20,7 +33,7 @@ module.exports = async function(req, res){
             }
         }
     }
-    
+
     var result = await Post.find(options, { _id:0, user_id:0 }).sort({ post_id:-1 }).limit(10).lean();
 
     for(i in result){
@@ -37,7 +50,7 @@ module.exports = async function(req, res){
             }
         }
     }
-
+    
     res.json({
         status:true,
         data:result

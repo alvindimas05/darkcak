@@ -1,20 +1,16 @@
 const { User, Post } = require("../mongoose"),
 getTime = require("../time");
-/**
- * Fungsi untuk menambahkan postingan
- * 
- * Body : user_id, title, image
- */
+
 async function create(req, res){
     var body = req.body,
-    params = ["user_id", "title"].check(body);
+    params = ["title", "category"].check(body);
 
-    if(!params) return res.err(null);
+    if(!params || !req.cookies || !req.files.image) return res.err(null);
 
-    if(req.files.image == undefined) return res.err(null);
-
-    var result = await User.findOne({
-        user_id:body.user_id
+    body.category = JSON.parse(body.category);
+    var cookies = req.cookies,
+    result = await User.findOne({
+        user_id:cookies.user_id
     });
     
     if(!result) return res.err(null);
@@ -29,13 +25,14 @@ async function create(req, res){
 
     new Post({
         post_id:id,
-        user_id:body.user_id,
+        user_id:cookies.user_id,
         username:result.username,
         title:body.title,
         image:{
             data:req.files.image.data,
             contentType:req.files.image.mimetype
         },
+        category:body.category,
         time:time,
         rill:0,
         fek:0,
@@ -49,7 +46,7 @@ async function create(req, res){
  * Fungsi untuk mengambil postingan
  * 
  * Query : page, title (optional)
- * Response : [ { post_id, username, title, image, rill, fek} ]
+ * Response : [ { post_id, username, title, image, rill, fek } ]
  */
 async function get(req, res){
     var query = req.query,
@@ -58,12 +55,23 @@ async function get(req, res){
     if(!params) return res.err(null);
 
     var page = await Post.find({}).select({ post_id:1 });
-    page = page.length + 10 - (query.page * 10);
-    
-    var result = await Post.find({
+    page = page.length + 10 - (query.page * 10),
+    options = {
         post_id: { $lte:page },
         title: { $regex:query.title, $options:"i" }
-    }, { _id:0, user_id:0 }).sort({ post_id:-1 }).limit(10).lean();
+    };
+
+    if(req.cookies){
+        var user = await User.findOne({ user_id:req.cookies.user_id });
+        if(user){
+            if(!user.gore){
+                options.category = { $nin:["gore"] };
+                if(!user.nsfw) options.category["$nin"].push("nsfw");
+            }
+        }
+    }
+
+    var result = await Post.find(options, { _id:0, user_id:0 }).sort({ post_id:-1 }).limit(10).lean();
 
     for(i in result){
         var time = Math.round(Date.now() / 1000) - result[i].time;

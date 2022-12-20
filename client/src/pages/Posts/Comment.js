@@ -1,12 +1,14 @@
 import axios from "axios";
+import cookies from "js-cookies";
 import { Replys, Reply } from "./Reply";
 
+var base_url = process.env.REACT_APP_BASE_URL;
 export async function Send(id, comment, setComment, data, setData, reply, setReply){
+    if(!cookies.getItem("username")) window.location.href = "/login";
     if(comment.length < 1) return;
     
     if(reply && comment.charAt(0) === "@"){
-        await axios.post("http://localhost:8080/api/post/reply", {
-            user_id:"Lv1pY48mJ0naaBAiLFhz",
+        await axios.post(base_url + "/api/post/reply", {
             post_id:id,
             comment_id:reply,
             comment:comment
@@ -16,11 +18,11 @@ export async function Send(id, comment, setComment, data, setData, reply, setRep
             if(dat.post_id === id){
                 dat.comments = dat.comments.map(com => {
                     if(com.comment_id === reply){
-                        com.reply = [...com.reply, {
-                            username:"alvindimas",
+                        com.reply.push({
+                            username:cookies.getItem("username"),
                             time:"Just now",
                             comment:comment
-                        }];
+                        });
                     }
                     return com;
                 });
@@ -28,8 +30,7 @@ export async function Send(id, comment, setComment, data, setData, reply, setRep
             return dat;
         }));
     } else {
-        var cid = await axios.post("http://localhost:8080/api/post/comment", {
-            user_id:"Lv1pY48mJ0naaBAiLFhz",
+        var cid = await axios.post(base_url + "/api/post/comment", {
             post_id:id,
             comment:comment
         });
@@ -37,12 +38,13 @@ export async function Send(id, comment, setComment, data, setData, reply, setRep
 
         setData(data.map(dat => {
             if(dat.post_id === id){
-                dat.comments = [...dat.comments, {
+                dat.comments.push({
                     comment_id:cid,
-                    username:"alvindimas05",
+                    username:cookies.getItem("username"),
                     comment:comment,
-                    time:"Just now"
-                }];
+                    time:"Just now",
+                    reply:[]
+                });
             }
             return dat;
         }));
@@ -58,7 +60,7 @@ export function Comments(props){
     setReply = props.setReply,
     setComment = props.setComment;
 
-    if(comments.length === 0) return(<h5>No comments yet...</h5>);
+    if(comments.length === 0) return(<h6>No comments yet...</h6>);
 
     return comments.map((com, i) => {
         function btn_reply(){
@@ -92,7 +94,9 @@ export function Comments(props){
                         {com.reply.length ? "Show Reply" : "No Reply"}
                     </span>
                 </div>
-                <div className="comments-reply" style={{ display:com.display ? "block" : "none" }}><Replys replys={com.reply}/></div>
+                <div className="comments-reply" style={{ display:com.display ? "block" : "none" }}>
+                    <Replys replys={com.reply}/>
+                </div>
             </div>
         );
     });

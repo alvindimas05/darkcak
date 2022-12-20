@@ -1,0 +1,12 @@
+#input-list{
+    position:absolute;
+    top:100%;
+    left:0;
+
+    border:1px solid gray;
+    background-color:white;
+}
+#input-list div{
+    padding:3px;
+    font-size:15px;
+}

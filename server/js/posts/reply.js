@@ -2,12 +2,12 @@ const { User, Post } = require("../mongoose");
 
 module.exports = async function(req, res){
     var body = req.body,
-    params = ["user_id", "post_id", "comment_id", "comment"].check(body);
+    params = ["post_id", "comment_id", "comment"].check(body);
 
-    if(!params) return res.err(null);
+    if(!params || !req.cookies) return res.err(null);
 
     var user = await User.findOne({
-        user_id:body.user_id
+        user_id:req.cookies.user_id
     });
 
     if(!user) return res.err(null);

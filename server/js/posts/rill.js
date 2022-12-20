@@ -59,7 +59,7 @@ const { User, Post } = require("../mongoose.js");
  * Response : rill : [ post_id ]
  */
 async function get(req, res){
-    if(!req.cookies.user_id) return res.err(null);
+    if(!req.cookies) return res.err(null);
 
     var cookies = req.cookies,
     user = await User.findOne({

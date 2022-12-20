@@ -31,6 +31,7 @@ export default function Post(props){
                     &nbsp;
                     <span className="post-date">{dat.time}</span>
                 </div>
+                <div style={{ marginTop:"-5px", marginBottom:"2px" }} className="post-date">{dat.category}</div>
                 <button className="btn btn-dark btn-rill" onClick={async () => Rill(dat.post_id, data, setData)} style={{ color:dat.rcol ? "lime" : "white" }}>
                     <i className="fa fa-thumbs-up"/> Rill
                 </button>

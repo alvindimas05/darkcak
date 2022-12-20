@@ -11,7 +11,7 @@ const { User, Post } = require("../mongoose");
     var body = req.body,
     params = ["post_id"].check(body);
 
-    if(!params || !req.cookies.user_id) return res.err(null);
+    if(!params || !req.cookies) return res.err(null);
 
     var cookies = req.cookies,
     user = await User.findOne({
@@ -60,7 +60,7 @@ const { User, Post } = require("../mongoose");
  * Response : fek : [ post_id ]
  */
 async function get(req, res){
-    if(!req.cookies.user_id) return res.err(null);
+    if(!req.cookies) return res.err(null);
 
     var cookies = req.cookies,
     user = await User.findOne({
