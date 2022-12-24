@@ -1,11 +1,12 @@
 const { User, Post } = require("../mongoose"),
 getTime = require("../time");
+const getPosts = require("./getPosts");
 
 async function create(req, res){
     var body = req.body,
     params = ["title", "category"].check(body);
 
-    if(!params || !req.cookies || !req.files.image) return res.err(null);
+    if(!params || !req.cookies || !req.files.file) return res.err(null);
 
     body.category = JSON.parse(body.category);
     var cookies = req.cookies,
@@ -15,9 +16,16 @@ async function create(req, res){
     
     if(!result) return res.err(null);
 
+    if(result.cooldown) return res.err("Cooldown...");
+
     if(body.title.length > 100) return res.err("Judul terlalu panjang!");
 
-    if(req.files.image.size > (5 * 1024 * 1024)) return res.err("Maksimum ukuran gambar adalah 5 MB!");
+    var imgtype = ["image/png", "image/jpg", "image/jpeg", "image/gif"],
+    isImage = true;
+    
+    if(!imgtype.includes(req.files.file.mimetype)) isImage = false;
+    if(req.files.file.mimetype != "video/mp4" && !isImage) return res.err("Sus files");
+    if(req.files.file.size > (2 * 1024 * 1024)) return res.err("Maksimum ukuran file adalah 2 MB!");
 
     var id = (await Post.find()).length + 1;
 
@@ -28,69 +36,34 @@ async function create(req, res){
         user_id:cookies.user_id,
         username:result.username,
         title:body.title,
-        image:{
-            data:req.files.image.data,
-            contentType:req.files.image.mimetype
+        file:{
+            data:req.files.file.data,
+            contentType:req.files.file.mimetype
         },
         category:body.category,
+        isImage:isImage,
         time:time,
         rill:0,
         fek:0,
         comments:[]
     }).save();
 
+    await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { cooldown:true });
+    setTimeout(async () => await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { cooldown:false }), 45 * 60 * 1000)
     res.json({ status:true });
 }
 
-/**
- * Fungsi untuk mengambil postingan
- * 
- * Query : page, title (optional)
- * Response : [ { post_id, username, title, image, rill, fek } ]
- */
 async function get(req, res){
     var query = req.query,
-    params = ["page", "title"].check(query);
+    params = ["page"].check(query);
 
     if(!params) return res.err(null);
 
-    var page = await Post.find({}).select({ post_id:1 });
-    page = page.length + 10 - (query.page * 10),
-    options = {
-        post_id: { $lte:page },
-        title: { $regex:query.title, $options:"i" }
-    };
-
-    if(req.cookies){
-        var user = await User.findOne({ user_id:req.cookies.user_id });
-        if(user){
-            if(!user.gore){
-                options.category = { $nin:["gore"] };
-                if(!user.nsfw) options.category["$nin"].push("nsfw");
-            }
-        }
-    }
-
-    var result = await Post.find(options, { _id:0, user_id:0 }).sort({ post_id:-1 }).limit(10).lean();
-
-    for(i in result){
-        var time = Math.round(Date.now() / 1000) - result[i].time;
-        result[i].time = getTime(time);
-
-        for(j in result[i].comments){
-            var ctime = Math.round(Date.now() / 1000) - result[i].comments[j].time;
-            result[i].comments[j].time = getTime(ctime);
-
-            for(k in result[i].comments[j].reply){
-                var rtime = Math.round(Date.now() / 1000) - result[i].comments[j].reply[k].time
-                result[i].comments[j].reply[k].time = getTime(rtime);
-            }
-        }
-    }
-
+    var options = {};
+    if(query.title) options.title = { $regex:query.title, $options:"i" };
     res.json({
         status:true,
-        data:result
+        data:await getPosts(req.cookies, query.page, options)
     });
 }
 

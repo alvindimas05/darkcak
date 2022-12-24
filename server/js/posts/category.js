@@ -1,5 +1,6 @@
-const { Post } = require("../mongoose"),
+const { Post, User } = require("../mongoose"),
 getTime = require("../time");
+const getPosts = require("./getPosts");
 
 var category = [
     "meme",
@@ -17,39 +18,27 @@ var category = [
     "gore"
 ];
 
-async function get(req, res){
-    var body = req.body,
-    params = ["category"].check(body);
+module.exports = async function(req, res){
+    var query = req.query,
+    params = ["category", "page"].check(query);
 
-    if(!params || !Array.isArray(body.category)) return res.err(null);
+    if(!params) return res.err(null);
 
-    var options = { category:{ $in:body.category } };
-    if(req.cookies){
-        var user = await User.findOne({ user_id:req.cookies.user_id });
-        if(user){
-            if(!user.gore){
-                options.category = { $nin:["gore"] };
-                if(!user.nsfw) options.category.$nin.push("nsfw");
-            }
-        }
+    var cat = query.category;
+    while(true){
+        if(cat[0] === " ") cat = cat.slice(1);
+        else if(cat.slice(-2) === "  ") cat = cat.slice(0, -1);
+        else break;
     }
+    cat = cat.split(" ");
 
-    var result = await Post.find(options, { _id:0, user_id:0 }).sort({ post_id:-1 }).limit(10).lean();
+    var options = { category:{ $all:cat } },
+    ignore = [],
+    result = await getPosts(req.cookies, query.page, options);
 
-    for(i in result){
-        var time = Math.round(Date.now() / 1000) - result[i].time;
-        result[i].time = getTime(time);
-
-        for(j in result[i].comments){
-            var ctime = Math.round(Date.now() / 1000) - result[i].comments[j].time;
-            result[i].comments[j].time = getTime(ctime);
-
-            for(k in result[i].comments[j].reply){
-                var rtime = Math.round(Date.now() / 1000) - result[i].comments[j].reply[k].time
-                result[i].comments[j].reply[k].time = getTime(rtime);
-            }
-        }
-    }
+    for(i in result)
+    if(result[i].category.some(val => ignore.includes(val)))
+    result.splice(i, 1);
     
     res.json({
         status:true,

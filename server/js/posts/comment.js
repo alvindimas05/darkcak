@@ -11,6 +11,7 @@ module.exports = async function(req, res){
     });
 
     if(!user) return res.err(null);
+    if(user.comldown) return res.err("Cooldown...");
 
     var result = await Post.findOne({
         post_id:body.post_id
@@ -34,5 +35,7 @@ module.exports = async function(req, res){
         }
     });
 
-    await res.json({ status:true, id:id });
+    await User.updateOne({ user_id:req.cookies.user_id }, { comldown:true })
+    setTimeout(async () => await User.updateOne({ user_id:req.cookies.user_id }, { comldown:false }), 60 * 1000);
+    res.json({ status:true, id:id });
 }

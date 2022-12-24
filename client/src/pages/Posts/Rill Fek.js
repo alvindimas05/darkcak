@@ -1,9 +1,9 @@
 import axios from "axios";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export async function Rill(id, data, setData){
-    if(!cookies.getItem("username")) window.location.href = "/login";
+    if(!cookies.get("username")) window.location.href = "/login";
 
     await axios.post(base_url + "/api/post/rill", { post_id:id });
     setData(data.map(dat => {
@@ -22,7 +22,7 @@ export async function Rill(id, data, setData){
 }
 
 export async function Fek(id, data, setData){
-    if(!cookies.getItem("username")) window.location.href = "/login";
+    if(!cookies.get("username")) window.location.href = "/login";
 
     await axios.post(base_url + "/api/post/fek", { post_id:id });
     setData(data.map(dat => {

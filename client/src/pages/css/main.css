@@ -1,5 +1,5 @@
 .post-title{
-    font-size:18px;
+    font-size:17px;
     font-weight:bold;
 }
 .post-by, .post-laiks, .post-date{
@@ -7,7 +7,10 @@
     color:gray !important;
 }
 .post-by{font-weight:700}
-.post-laiks{font-weight:500}
+.post-laiks{
+    font-size:13px;
+    font-weight:500;
+}
 button{
     font-size:15px !important;
     padding:.25rem .5rem !important;

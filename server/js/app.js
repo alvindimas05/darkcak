@@ -9,11 +9,10 @@ app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(cookieParser());
-app.use(cors({ credentials:true, origin:"http://localhost:3000" }));
+app.use(cors({ credentials:true, origin:["http://localhost:3000", "http://192.168.1.5:3000", "http://ancribat.my.id"] }));
 app.use(fileUpload({ limits:{ fileSize:5 * 1024 * 1024 } }));
 
-app.use("/css", express.static("public/css"));
-app.use("/js", express.static("public/js"));
+app.use(express.static("public"));
 
 app.response.err = function(msg){
     this.json({

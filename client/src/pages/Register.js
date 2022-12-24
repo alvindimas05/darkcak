@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
 
 import Nav from "./Nav";
 
@@ -18,7 +18,7 @@ export default function Register(){
         });
 
         if(res.data.status){
-            cookies.setItem("username", res.data.username);
+            cookies.set("username", res.data.username, { expires:360 });
             window.location.href = "/";
         } else alert(res.data.message);
     }

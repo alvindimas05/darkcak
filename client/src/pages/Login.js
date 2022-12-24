@@ -1,7 +1,7 @@
 import Nav from "./Nav";
 import axios from "axios";
 import { useState } from "react";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export default function Login(){
@@ -14,7 +14,7 @@ export default function Login(){
             password:password
         });
         if(res.data.status){
-            cookies.setItem("username", res.data.username);
+            cookies.set("username", res.data.username, { expires:360 });
             window.location.href = "/";
         } else alert("Username atau Password salah!");
     }

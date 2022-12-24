@@ -1,25 +1,26 @@
 import axios from "axios";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
 import { Replys, Reply } from "./Reply";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export async function Send(id, comment, setComment, data, setData, reply, setReply){
-    if(!cookies.getItem("username")) window.location.href = "/login";
+    if(!cookies.get("username")) window.location.href = "/login";
     if(comment.length < 1) return;
     
     if(reply && comment.charAt(0) === "@"){
-        await axios.post(base_url + "/api/post/reply", {
+        var res = await axios.post(base_url + "/api/post/reply", {
             post_id:id,
             comment_id:reply,
             comment:comment
         });
 
+        if(!res.data.status) return alert(res.data.message);
         setData(data.map(dat => {
             if(dat.post_id === id){
                 dat.comments = dat.comments.map(com => {
                     if(com.comment_id === reply){
                         com.reply.push({
-                            username:cookies.getItem("username"),
+                            username:cookies.get("username"),
                             time:"Just now",
                             comment:comment
                         });
@@ -34,13 +35,14 @@ export async function Send(id, comment, setComment, data, setData, reply, setRep
             post_id:id,
             comment:comment
         });
+        if(!cid.data.status) return alert(cid.data.message);
         cid = cid.data.id;
 
         setData(data.map(dat => {
             if(dat.post_id === id){
                 dat.comments.push({
                     comment_id:cid,
-                    username:cookies.getItem("username"),
+                    username:cookies.get("username"),
                     comment:comment,
                     time:"Just now",
                     reply:[]
@@ -95,7 +97,7 @@ export function Comments(props){
                     </span>
                 </div>
                 <div className="comments-reply" style={{ display:com.display ? "block" : "none" }}>
-                    <Replys replys={com.reply}/>
+                    <Replys replys={com.reply} id={com.comment_id} setReply={setReply} setComment={setComment}/>
                 </div>
             </div>
         );

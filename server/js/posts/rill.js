@@ -1,12 +1,6 @@
 const { User, Post } = require("../mongoose.js");
-/**
- * Fungsi untuk menambah rill
- * 
- * Body : user_id, post_id
- * Response : status
- */
 
- async function post(req, res){
+async function post(req, res){
     var body = req.body,
     params = ["post_id"].check(body);
 
@@ -52,12 +46,6 @@ const { User, Post } = require("../mongoose.js");
     res.json({ status:true });
 }
 
-/**
- * Fungsi untuk mengambil rill user
- * 
- * Body : -
- * Response : rill : [ post_id ]
- */
 async function get(req, res){
     if(!req.cookies) return res.err(null);
 

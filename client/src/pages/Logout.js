@@ -1,8 +1,14 @@
 import axios from "axios";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
+import { useEffect } from "react";
 
 export default function Logout(){
-    cookies.removeItem("username");
-    axios.get(process.env.REACT_APP_BASE_URL + "/api/user/logout")
-    .then(() => window.location.href = "/")
+    useEffect(() => {
+        (async () => {
+            cookies.remove("username");
+            await axios.get(process.env.REACT_APP_BASE_URL + "/api/user/logout");
+            setTimeout(() => window.location.href = "/", 500);
+        })();
+    });
+    return <></>;
 }

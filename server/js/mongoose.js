@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb+srv://alvindimas05:adp050107@darkcak.lko8bij.mongodb.net/darkcak");
+mongoose.connect("mongodb://localhost/darkcak");
 
 const userSchema = mongoose.Schema({
     user_id:String,
@@ -13,7 +13,10 @@ const userSchema = mongoose.Schema({
     },
     nsfw:Boolean,
     gore:Boolean,
+    cooldown:Boolean,
+    comldown:Boolean,
     description:String,
+    blacklist:Array,
     time:Number,
     rill:Array,
     fek:Array
@@ -24,11 +27,12 @@ postSchema = mongoose.Schema({
     user_id:String,
     username:String,
     title:String,
-    image:{
+    file:{
         data:Buffer,
         contentType:String
     },
     category:Array,
+    isImage:Boolean,
     time:Number,
     rill:Number,
     fek:Number,

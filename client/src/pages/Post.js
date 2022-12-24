@@ -12,14 +12,16 @@ var base_url = process.env.REACT_APP_BASE_URL;
 export default function Main(){
     const [data, setData] = useState(null),
     [done, setDone] = useState(false),
-    page = useParams().page || 1;
+    params = useParams();
 
     useEffect(() => {
         if(!done) (async () => {
-            var posts = await axios.get(base_url + "/api/post?page=1"),
+            var posts = await axios.get(base_url + "/api/post/id?post_id=" + params.id),
             rill = await axios.get(base_url + "/api/post/rill"),
             fek = await axios.get(base_url + "/api/post/fek");
             
+            posts.data.data = [posts.data.data];
+
             setData(posts.data.data.map(post => {
                 if(Array.isArray(rill.data)){
                     if(rill.data.indexOf(post.post_id) !== -1) post.rcol = true;
@@ -39,20 +41,13 @@ export default function Main(){
             }));
             setDone(true);
         })();
-    }, [done, page]);
+    }, [done, params]);
 
     return(
         <>
             <Nav data={data} setData={setData}/>
             <div className="container p-2">
-                {done ? <Posts data={data} setData={setData}/> : (<Loading/>)}
-                <div className="w-100">
-                    <div className="mt-2 mx-auto my-0 row text-center" style={{ width:"100px" }}>
-                        <a className="col" href={"/p/" + (page - 1)}>{page - 1 < 1 ? "" : page - 1}</a>
-                        <span className="col">{page}</span>
-                        <a className="col" href={"/p/" + (page + 1)}>{data && data.length < 5 ? "" : page + 1}</a>
-                    </div>
-                </div>
+                {done ? <Posts data={data} setData={setData} one={true}/> : (<Loading/>)}
             </div>
         </>
     );

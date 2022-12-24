@@ -54,6 +54,8 @@ async function create(req, res){
         description:null,
         nsfw:false,
         gore:false,
+        blacklist:[],
+        cooldown:false,
         time:time,
         rill:[],
         fek:[]

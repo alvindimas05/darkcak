@@ -1,6 +1,5 @@
-//import axios from "axios";
 import { useState, useRef } from "react";
-import cookies from "js-cookies";
+import cookies from "js-cookie";
 import "./css/nav.css";
 
 function a_href(e){
@@ -22,6 +21,9 @@ function nav_list(status){
             </div>
             <div className="btn-list py-2 px-3" onClick={a_href}>
                 <a href="/logout">Log out</a>
+            </div>
+            <div className="btn-list py-2 px-3" onClick={a_href}>
+                <a href="https://saweria.co/alvindimas05">Donate</a>
             </div>
         </div>
         );
@@ -53,7 +55,7 @@ var categoryList = [
     "sport",
     "meme"
 ];
-export default function Nav(){
+export default function Nav(props){
     const [ display, setDisplay ] = useState("none"),
     [search, setSearch] = useState(""),
     [sdisplay, setSdisplay] = useState(false),
@@ -62,7 +64,7 @@ export default function Nav(){
     focus = useRef(null);
 
     function add_val(val){
-        var cat = search;
+        var cat = search.toLowerCase();
         while(true){
             if(cat[0] === " ") cat = cat.slice(1);
             else if(cat.slice(-2) === "  ") cat = cat.slice(0, -1);
@@ -81,17 +83,18 @@ export default function Nav(){
 
     function search_enter(e){
         if(e.key === "Enter"){
+            e.preventDefault();
             if(check) window.location.href = "/c/" + search;
             else window.location.href = "/s/" + search;
         }
     }
 
     var status = {
-        status:cookies.getItem("username") ? true : false,
-        username:cookies.getItem("username")
+        status:cookies.get("username") ? true : false,
+        username:cookies.get("username")
     };
     return(
-    <nav className="nav bg-dark text-light">
+    <nav className="nav bg-dark text-light position-relative" style={{ zIndex:"20" }}>
         <div className="container d-flex align-items-center my-2 px-3">
             <a className="navbar-brand fs-5" href="/">Darkcak</a>
             <i className="fa fa-list ms-auto" onClick={list_click}></i>
@@ -100,7 +103,15 @@ export default function Nav(){
             {nav_list(status)}
             <div className="row py-2 px-1 w-100 m-0 search">
                 <div className="col-11 ps-2 position-relative">
-                    <input id="search" placeholder="Search" ref={focus} value={search} onChange={e => {
+                    <input id="search" placeholder="Search" type="text" ref={focus} value={search}
+                    onFocus={e => {
+                        if(props.data) props.setData(props.data.map(dat => {
+                            dat.display = false;
+                            return dat;
+                        }));
+                        e.target.focus();
+                    }}
+                    onChange={e => {
                         setSearch(e.target.value);
                         if(check) setSdisplay(true);
                     }} onBlur={() => {
@@ -110,7 +121,7 @@ export default function Nav(){
                         <div id="search-list">
                             {(() => {
                                 if(check) return categoryList.map((val, i) => {
-                                    var cat = search;
+                                    var cat = search.toLowerCase();
                                     while(true){
                                         if(cat[0] === " ") cat = cat.slice(1);
                                         else break;

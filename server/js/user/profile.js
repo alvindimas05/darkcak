@@ -17,6 +17,10 @@ async function post(req, res){
         return res.json({ status:true });
     };
 
+    var imgtype = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
+    
+    if(!imgtype.includes(req.files.image.mimetype)) return res.err("Sus files");
+
     if(req.files.image.size > (1 * 1024 * 1024)) return res.err("Maksimum ukuran gambar adalah 1 MB!");    
 
     await User.updateOne({ user_id:cookies.user_id }, {
@@ -37,7 +41,7 @@ async function get(req, res){
     if(!params) return res.err(null);
 
     var user = await User.findOne({ username:query.username })
-    .select({ image:1, description:1, nsfw:1, gore:1, _id:0 }).lean();
+    .select({ image:1, description:1, nsfw:1, gore:1, blacklist:1, _id:0 }).lean();
 
     if(!user) return res.err(null);
 

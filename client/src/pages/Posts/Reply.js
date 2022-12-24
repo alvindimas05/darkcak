@@ -3,7 +3,9 @@ export function Reply(username, id, setReply, setComment){
     setReply(id);
 }
 export function Replys(props){
-    var replys = props.replys;
+    var replys = props.replys,
+    setReply = props.setReply,
+    setComment = props.setComment;
 
     return replys.map((rep, i) => (
         <div className="comment-reply" key={i}>
@@ -11,6 +13,11 @@ export function Replys(props){
             &nbsp;
             <span className="comment-date">{rep.time}</span>
             <p className="comment-value mb-0">{rep.comment}</p>
+            <span className="comment-breply" onClick={() => {
+                setReply(props.id);
+                setComment(`@${rep.username} `);
+            }}>Reply
+            </span>
         </div>
     ));
 }
