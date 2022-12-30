@@ -24,11 +24,13 @@ export default function Post(props){
     }
 
     async function report(){
-        var msg = prompt("Give me a good reason (Spam False Report = Warn/Banned)");
-        if(!msg || !cookies.get("username")) return;
-        var res = await axios.post(process.env.REACT_APP_BASE_URL + "/api/post/report", {
+        var reason = prompt("Give me a good reason (Spam False Report = Warn/Banned)");
+        if(!reason || !cookies.get("username")) return;
+        var res = await axios.post(process.env.REACT_APP_BASE_URL + "/api/admin/report", {
+            type:1,
+            to:null,
             post_id:dat.post_id,
-            msg:msg
+            reason:reason
         });
         if(res.data.status) alert("Reported!");
     }

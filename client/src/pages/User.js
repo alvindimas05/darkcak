@@ -57,9 +57,9 @@ export default function User(){
                 {done ? <Posts data={data} setData={setData}/> : <Loading/>}
                 <div className="w-100">
                     <div className="mt-2 mx-auto my-0 row text-center" style={{ width:"100px" }}>
-                        <a className="col" href={`/u/${params.user}/p/${page + 1}`}>{page - 1 < 1 ? "" : page - 1}</a>
+                        <a className="col" href={`/u/${params.user}/p/${page + 1}`}>{page - 1 < 1 ? "" : (page - 1)}</a>
                         <span className="col">{page}</span>
-                        <a className="col" href={`/u/${params.user}/p/${page - 1}`}>{data && data.length < 5 ? "" : page + 1}</a>
+                        <a className="col" href={`/u/${params.user}/p/${page - 1}`}>{data && data.length < 5 ? "" : (page + 1)}</a>
                     </div>
                 </div>
             </div>

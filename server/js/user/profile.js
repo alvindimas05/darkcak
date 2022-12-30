@@ -41,7 +41,7 @@ async function get(req, res){
     if(!params) return res.err(null);
 
     var user = await User.findOne({ username:query.username })
-    .select({ image:1, description:1, nsfw:1, gore:1, blacklist:1, _id:0 }).lean();
+    .select({ image:1, description:1, nsfw:1, gore:1, blacklist:1, banned:1, warn:1, _id:0 }).lean();
 
     if(!user) return res.err(null);
 

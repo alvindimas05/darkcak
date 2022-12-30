@@ -18,6 +18,7 @@ categoryList = [
     "news",
     "nsfw",
     "politic",
+    "religious",
     "sport",
     "meme"
 ];

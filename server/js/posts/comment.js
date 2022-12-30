@@ -12,6 +12,7 @@ module.exports = async function(req, res){
 
     if(!user) return res.err(null);
     if(user.comldown) return res.err("Cooldown...");
+    if(user.banned) return res.err("Banned thx");
 
     var result = await Post.findOne({
         post_id:body.post_id

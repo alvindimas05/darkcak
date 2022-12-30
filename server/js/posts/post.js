@@ -17,6 +17,7 @@ async function create(req, res){
     if(!result) return res.err(null);
 
     if(result.cooldown) return res.err("Cooldown...");
+    if(result.banned) return res.err("Banned thx");
 
     if(body.title.length > 100) return res.err("Judul terlalu panjang!");
 
@@ -42,6 +43,7 @@ async function create(req, res){
         },
         category:body.category,
         isImage:isImage,
+        deleted:false,
         time:time,
         rill:0,
         fek:0,
@@ -63,7 +65,7 @@ async function get(req, res){
     if(query.title) options.title = { $regex:query.title, $options:"i" };
     res.json({
         status:true,
-        data:await getPosts(req.cookies, query.page, options)
+        data:await getPosts(req.cookies, query.page, options, query.limit ? query.limit : 5)
     });
 }
 

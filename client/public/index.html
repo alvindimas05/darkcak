@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Darkcak is a meme website that inspired from 1cak, but Darkcak is the freedom version of 1cak">
+    <link rel="icon" type="image/png" href="putih.png">
     <title>Darkcak the freedom 1cak</title>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root" class="h-100"></div>
+    <script>
+        var root = document.getElementById("root")
+        if(window.innerWidth > 767) root.style.width = "35%";
+        else if(window.innerWidth > 480)root.style.width = "50%";
+
+        if(window.innerWidth > 480){
+            root.style.position = "absolute";
+            root.style.left = "50%";
+            root.style.transform = "translateX(-50%)";
+            root.style.borderLeft = "1px solid";
+            root.style.borderRight = "1px solid";
+            root.style.overflow = "auto";
+        }
+    </script>
 </body>
 </html>

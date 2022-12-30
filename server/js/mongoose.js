@@ -15,8 +15,11 @@ const userSchema = mongoose.Schema({
     gore:Boolean,
     cooldown:Boolean,
     comldown:Boolean,
+    corldown:Boolean,
     description:String,
     blacklist:Array,
+    warn:String,
+    banned:Boolean,
     time:Number,
     rill:Array,
     fek:Array
@@ -36,6 +39,7 @@ postSchema = mongoose.Schema({
     time:Number,
     rill:Number,
     fek:Number,
+    deleted:Boolean,
     comments:[{
         comment_id:Number,
         username:String,
@@ -49,10 +53,29 @@ postSchema = mongoose.Schema({
     }]
 }, { minimize:false }),
 
+adminSchema = mongoose.Schema({
+    admin_id:String,
+    role_id:Number,
+    username:String,
+    password:String
+}, { minimize:false }),
+
+reportSchema = mongoose.Schema({
+    from:String,
+    type:Number,
+    to:String,
+    post_id:Number,
+    reason:String
+}, { minimize:false }),
+
 User = mongoose.model("users", userSchema),
-Post = mongoose.model("posts", postSchema);
+Post = mongoose.model("posts", postSchema),
+Admin = mongoose.model("admins", adminSchema),
+Report = mongoose.model("reports", reportSchema);
 
 module.exports = {
     User:User,
-    Post:Post
+    Post:Post,
+    Admin:Admin,
+    Report:Report
 };

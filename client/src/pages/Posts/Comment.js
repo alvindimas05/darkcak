@@ -79,6 +79,19 @@ export function Comments(props){
                 return dat;
             }));
         }
+
+        async function report(){
+            var reason = prompt("Give me a good reason (Spam False Report = Warn/Banned)");
+            if(!reason || !cookies.get("username")) return;
+            var res = await axios.post(process.env.REACT_APP_BASE_URL + "/api/admin/report", {
+                type:2,
+                to:com.username,
+                post_id:props.id,
+                reason:reason
+            });
+            if(res.data.status) alert("Reported!");
+        }    
+
         return(
             <div className="comment" key={i}>
                 <a href={"/u/" + com.username}>
@@ -95,9 +108,11 @@ export function Comments(props){
                     <span className="breply-show" onClick={btn_reply}>
                         {com.reply.length ? "Show Reply" : "No Reply"}
                     </span>
+                    &nbsp;&nbsp;
+                    <span className="breply-reply" onClick={report}>Report</span>
                 </div>
                 <div className="comments-reply" style={{ display:com.display ? "block" : "none" }}>
-                    <Replys replys={com.reply} id={com.comment_id} setReply={setReply} setComment={setComment}/>
+                    <Replys replys={com.reply} post_id={props.id} id={com.comment_id} setReply={setReply} setComment={setComment}/>
                 </div>
             </div>
         );

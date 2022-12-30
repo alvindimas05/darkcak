@@ -48,3 +48,4 @@ button{
     width:95%;
     margin-left:auto;
 }
+.fa-warning::before{ font-size:30px }

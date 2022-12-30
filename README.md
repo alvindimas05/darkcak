@@ -5,3 +5,4 @@
 3. Ganti host server index.js
 4. Uncomment response semua file api.js
 5. Ganti url mongoose
+6. Ganti url aplikasi admin
