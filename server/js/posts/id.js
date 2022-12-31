@@ -9,6 +9,8 @@ module.exports = async function(req, res){
     
     var result = await Post.findOne({ post_id:query.post_id }, { _id:0, user_id:0, image:0 }).lean();
 
+    if(!result) return res.err(null);
+
     result.time = getTime(Math.round(Date.now() / 1000) - result.time);
     for(j in result.comments){
         var ctime = Math.round(Date.now() / 1000) - result.comments[j].time;

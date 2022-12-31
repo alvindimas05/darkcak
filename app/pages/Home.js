@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ToastAndroid } from "react-native";
+import Logout from "./Logout";
 
 const Home = ({navigation}) => {
     const [admin, setAdmin] = useState(false),
@@ -10,7 +11,7 @@ const Home = ({navigation}) => {
         return(
             <TouchableOpacity ctiveOpacity={.7} underlayColor="none" style={{ paddingVertical:10,
             paddingHorizontal:15, backgroundColor:"rgb(50,50,50)", borderBottomColor:"black",
-            borderBottomWidth:1 }} onPress={ () => navigation.navigate(props.title) }>
+            borderBottomWidth:1 }} onPress={ props.onPress ? props.onPress : () => navigation.navigate(props.title) }>
                 <View>
                     <Text style={{ color:"white", fontSize:18 }}>{props.title}</Text>
                     <Text style={{ color:"white", fontSize:14 }}>{props.text}</Text>
@@ -33,7 +34,7 @@ const Home = ({navigation}) => {
             <Btn title="Posts" text="Search dan cek postingan-postingan user"/>
             <Btn title="Users" text="Search dan cek akun-akun user"/>
             { check && admin && <Btn title="Admins" text="Cek akun-akun admin"/>}
-            <Btn title="Log out" text="Log out dari aplikasi"/>
+            <Btn title="Log out" text="Log out dari aplikasi" onPress={Logout}/>
         </View>
     );
 }

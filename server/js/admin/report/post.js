@@ -6,7 +6,7 @@ module.exports = async function(req, res, wss){
 
     if(!params || !req.cookies) return res.err(null);
 
-    var user = await User.findOne({ username:body.from, user_id:req.cookies.user_id });
+    var user = await User.findOne({ user_id:req.cookies.user_id });
     if(!user) return res.err(null);
     if(user.corldown) return res.err("Cooldown...");
 
