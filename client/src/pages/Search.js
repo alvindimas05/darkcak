@@ -13,7 +13,7 @@ export default function Search(){
     const params = useParams();
     const [data, setData] = useState(null),
     [done, setDone] = useState(false),
-    page = params.page || 1;
+    page = parseInt(params.page) || 1;
 
     useEffect(() => {
         if(!done) (async () => {
@@ -50,9 +50,9 @@ export default function Search(){
                 {done ? <Posts data={data} setData={setData}/> : <Loading/>}
                 <div className="w-100">
                     <div className="mt-2 mx-auto my-0 row text-center" style={{ width:"100px" }}>
-                        <a className="col" href={`/s/${params.search}/p/${page - 1}`}>{page - 1 < 1 ? "" : (page - 1)}</a>
+                        {page - 1 > 0 && <a className="col" href={"/p/" + (page - 1)}>{page - 1}</a>}
                         <span className="col">{page}</span>
-                        <a className="col" href={`/s/${params.search}/p/${page + 1}`}>{data && data.length < 5 ? "" : (page + 1)}</a>
+                        {data && data.length === 5 && <a className="col" href={"/p/" + (page + 1)}>{page + 1}</a>}
                     </div>
                 </div>
             </div>

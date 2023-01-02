@@ -65,7 +65,7 @@ async function get(req, res){
     if(query.title) options.title = { $regex:query.title, $options:"i" };
     res.json({
         status:true,
-        data:await getPosts(req.cookies, query.page, options, query.limit ? query.limit : 5)
+        data:await getPosts(req.cookies, query.page, options)
     });
 }
 

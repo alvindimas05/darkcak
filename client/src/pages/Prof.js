@@ -4,6 +4,7 @@ import axios from "axios";
 import Nav from "./Nav";
 import Profile from "./Profile/Profile";
 import cookies from "js-cookie";
+import Loading from "./Loading/Loading";
 
 var base_url = process.env.REACT_APP_BASE_URL,
 categoryList = [
@@ -113,6 +114,7 @@ export default function Prof(){
     return(
         <>
             <Nav/>
+            { !done && <Loading/> }
             <Profile profile={profile} src={src}/>
             <div className="container">
                 <div className="mt-3">

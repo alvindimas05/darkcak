@@ -1,7 +1,8 @@
 const { User, Post, Admin } = require("../mongoose"),
 getTime = require("../time");
 
-module.exports = async function(cookies, page, options, limit){
+module.exports = async function(cookies, page, options){
+    var limit = 5;
     page = parseInt(page);
     if(cookies){
         var user = await User.findOne({ user_id:cookies.user_id });
@@ -10,8 +11,8 @@ module.exports = async function(cookies, page, options, limit){
             options.category.$nin.push("hide");
             if(!user.gore) options.category.$nin.push("gore");
             if(!user.nsfw) options.category.$nin.push("nsfw");
-        }
-    }
+        } else options.category = { $nin:["hide", "nsfw", "gore"] };
+    } else options.category = { $nin:["hide", "nsfw", "gore"] };
 
     var result = await Post.find(options, { _id:0, user_id:0, file:0 }).sort({ post_id:-1 }).lean(),
     page = page * limit - limit;
