@@ -1,24 +1,25 @@
 import { useState } from "react";
 import axios from "axios";
-import cookies from "js-cookie";
 
 import Nav from "./Nav";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export default function Register(){
-    const [username, setUsername] = useState(""),
+    const [email, setEmail] = useState(""),
+    [username, setUsername] = useState(""),
     [password, setPassword] = useState(""),
     [vpassword, setVpassword] = useState("");
 
     async function create(){
         var res = await axios.post(base_url + "/api/user/create", {
+            email:email,
             username:username,
             password:password,
             vpassword:vpassword
         });
 
         if(res.data.status){
-            cookies.set("username", res.data.username, { expires:360 });
+            alert("Check your email to verify!");
             window.location.href = "/";
         } else alert(res.data.message);
     }
@@ -28,6 +29,8 @@ export default function Register(){
             <div className="container p-2" align="center">
                 <h3>Register Darkcak</h3>
                 <div>
+                    <span>Email</span><br/>
+                    <input type="text" name="email" onInput={e => setEmail(e.target.value)} required/><br/>
                     <span>Username</span><br/>
                     <input type="text" name="username" onInput={e => setUsername(e.target.value)} required/><br/>
                     <span>Password</span><br/>

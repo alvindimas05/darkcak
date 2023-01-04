@@ -38,6 +38,7 @@ dauser = require("./js/admin/admin/delete");
 
 app.post("/api/user/create", user.create);
 app.post("/api/user/login", user.login);
+app.get("/api/user/verify", require("./js/user/verif"));
 app.get("/api/user/logout", logout);
 app.post("/api/user/blacklist", blacklist);
 

@@ -43,11 +43,7 @@ async function create(req, res){
         },
         category:body.category,
         isImage:isImage,
-        deleted:false,
-        time:time,
-        rill:0,
-        fek:0,
-        comments:[]
+        time:time
     }).save();
 
     await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { cooldown:true });

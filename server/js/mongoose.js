@@ -1,28 +1,67 @@
 const mongoose = require("mongoose");
 
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb://localhost/darkcak");
+mongoose.connect("mongodb://alvindimas:adp050107@ancritbat.my.id", { dbName:"darkcak" });
 
 const userSchema = mongoose.Schema({
     user_id:String,
     username:String,
     password:String,
-    image:{
-        data:Buffer,
-        contentType:String
-    },
-    nsfw:Boolean,
-    gore:Boolean,
-    cooldown:Boolean,
-    comldown:Boolean,
-    corldown:Boolean,
-    description:String,
-    blacklist:Array,
-    warn:String,
-    banned:Boolean,
     time:Number,
-    rill:Array,
-    fek:Array
+    image:{
+        data:{
+            type:Buffer,
+            default:null
+        },
+        contentType:{
+            type:String,
+            default:null
+        }
+    },
+    nsfw:{
+        type:Boolean,
+        default:false
+    },
+    gore:{
+        type:Boolean,
+        default:false
+    },
+    cooldown:{
+        type:Boolean,
+        default:false
+    },
+    comldown:{
+        type:Boolean,
+        default:false
+    },
+    corldown:{
+        type:Boolean,
+        default:false
+    },
+    description:{
+        type:String,
+        default:null
+    },
+    blacklist:{
+        type:Array,
+        default:[]
+    },
+    warn:{
+        type:String,
+        default:null
+    },
+    banned:{
+        type:Boolean,
+        default:false
+    },
+    rill:{
+        type:Array,
+        default:[]
+    },
+    fek:{
+        type:Array,
+        default:[]
+    },
 }, { minimize:false }),
 
 postSchema = mongoose.Schema({
@@ -37,21 +76,30 @@ postSchema = mongoose.Schema({
     category:Array,
     isImage:Boolean,
     time:Number,
-    rill:Number,
-    fek:Number,
-    deleted:Boolean,
-    comments:[{
-        comment_id:Number,
-        username:String,
-        comment:String,
-        time:Number,
-        reply:[{
-            username:String,
-            comment:String,
-            time:Number,
-        }]
-    }]
+    rill:{
+        type:Number,
+        default:0
+    },
+    fek:{
+        type:Number,
+        default:0
+    },
+    deleted:{
+        type:Boolean,
+        default:false
+    },
+    comments:{
+        type:Array,
+        default:[]
+    }
 }, { minimize:false }),
+
+verifSchema = mongoose.Schema({
+    user_id:String,
+    email:String,
+    username:String,
+    password:String
+}),
 
 adminSchema = mongoose.Schema({
     admin_id:String,
@@ -70,12 +118,14 @@ reportSchema = mongoose.Schema({
 
 User = mongoose.model("users", userSchema),
 Post = mongoose.model("posts", postSchema),
+Verif = mongoose.model("verifs", verifSchema),
 Admin = mongoose.model("admins", adminSchema),
 Report = mongoose.model("reports", reportSchema);
 
 module.exports = {
     User:User,
     Post:Post,
+    Verif:Verif,
     Admin:Admin,
     Report:Report
 };
