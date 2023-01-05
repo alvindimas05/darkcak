@@ -94,22 +94,30 @@ export function Comments(props){
 
         return(
             <div className="comment" key={i}>
-                <a href={"/u/" + com.username}>
-                    <span className="comment-by">{com.username}</span>
-                </a>
-                &nbsp;
-                <span className="comment-date">{com.time}</span>
-                <p className="comment-value mb-0">{com.comment}</p>
-                <div className="comment-breply">
-                    <span className="breply-reply" onClick={() => Reply(com.username, com.comment_id, setReply, setComment)}>
-                        Reply
-                    </span>
-                    &nbsp;&nbsp;
-                    <span className="breply-show" onClick={btn_reply}>
-                        {com.reply.length ? "Show Reply" : "No Reply"}
-                    </span>
-                    &nbsp;&nbsp;
-                    <span className="breply-reply" onClick={report}>Report</span>
+                <div style={{ display:"grid", gridTemplateColumns:"auto 87.5%" }}>
+                    <div className="overflow-hidden pt-2">
+                        <img style={{ width:"40px", borderRadius:"1000px" }} alt="Profile"
+                        src={process.env.REACT_APP_BASE_URL + "/api/user/image?compressed=1&username=" + com.username}/>
+                    </div>
+                    <div className="ps-1">
+                        <a href={"/u/" + com.username}>
+                            <span className="comment-by">{com.username}</span>
+                        </a>
+                        &nbsp;
+                        <span className="comment-date">{com.time}</span>
+                        <p className="comment-value mb-0">{com.comment}</p>
+                        <div className="comment-breply">
+                            <span className="breply-reply" onClick={() => Reply(com.username, com.comment_id, setReply, setComment)}>
+                                Reply
+                            </span>
+                            &nbsp;&nbsp;
+                            <span className="breply-show" onClick={btn_reply}>
+                                {com.reply.length ? "Show Reply" : "No Reply"}
+                            </span>
+                            &nbsp;&nbsp;
+                            <span className="breply-reply" onClick={report}>Report</span>
+                        </div>
+                    </div>
                 </div>
                 <div className="comments-reply" style={{ display:com.display ? "block" : "none" }}>
                     <Replys replys={com.reply} post_id={props.id} id={com.comment_id} setReply={setReply} setComment={setComment}/>

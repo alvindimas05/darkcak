@@ -21,20 +21,29 @@ async function create(req, res){
         username:body.username
     });
 
-    if(result) return res.err("Email atau Username sudah digunakan!");
+    if(result) return res.err("Username sudah digunakan!");
 
-    if(result.email == body.email || result.ip == req.ip)
-    return res.err("Kamu tidak boleh membuat lebih dari 1 akun!");
+    var result = await User.findOne({ email:body.email });
+    if(result) return res.err("Kamu tidak boleh membuat lebih dari 1 akun!");
 
     if(!isEmailValid(body.email)) return res.err("Email tidak valid!");
     
     var id = randstring();
-    await new Verif({
-        user_id:id,
-        email:body.email,
-        username:body.username,
-        password:body.password
-    });
+    if(await Verif.findOne({ email:body.email })){
+        await Verif.updateOne({ email:body.email }, {
+            user_id:id,
+            email:body.email,
+            username:body.username,
+            password:body.password
+        });
+    } else {
+        await new Verif({
+            user_id:id,
+            email:body.email,
+            username:body.username,
+            password:body.password
+        }).save();
+    }
 
     var transport = nodemailer.createTransport({
         service:"gmail",
@@ -47,8 +56,8 @@ async function create(req, res){
     await transport.sendMail({
         from:"darkcakcommunity@gmail.com",
         to:body.email,
-        subject:"Email Test",
-        html:`<a href='https://darkcak.xyz/verification/${id}'>Click me to verify your email</a>`
+        subject:"Darkcak Email Verification",
+        html:`<a href='https://darkcak.xyz/verify/${id}'>Click me to verify your email</a>`
     });
 
     res.json({ status:true });

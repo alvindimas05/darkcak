@@ -2,30 +2,39 @@ import { useState } from "react";
 import axios from "axios";
 
 import Nav from "./Nav";
+import Loading from "./Loading/Loading";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export default function Register(){
     const [email, setEmail] = useState(""),
     [username, setUsername] = useState(""),
     [password, setPassword] = useState(""),
-    [vpassword, setVpassword] = useState("");
+    [vpassword, setVpassword] = useState(""),
+    [loading, setLoading] = useState(false);
 
     async function create(){
-        var res = await axios.post(base_url + "/api/user/create", {
-            email:email,
-            username:username,
-            password:password,
-            vpassword:vpassword
-        });
-
-        if(res.data.status){
-            alert("Check your email to verify!");
-            window.location.href = "/";
-        } else alert(res.data.message);
+        if(!loading){
+            setLoading(true);
+            var res = await axios.post(base_url + "/api/user/create", {
+                email:email,
+                username:username,
+                password:password,
+                vpassword:vpassword
+            });
+    
+            if(res.data.status){
+                alert("Check your email to verify!");
+                window.location.href = "/";
+            } else {
+                alert(res.data.message);
+                setLoading(false);
+            }
+        }
     }
     return(
         <>
             <Nav/>
+            { loading ? <Loading/> : 
             <div className="container p-2" align="center">
                 <h3>Register Darkcak</h3>
                 <div>
@@ -41,6 +50,7 @@ export default function Register(){
                     <a href="/login">Sudah punya akun?</a>
                 </div>
             </div>
+            }
         </>
     )
 }

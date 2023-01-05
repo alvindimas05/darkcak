@@ -11,6 +11,7 @@ import Prof from "./pages/Prof";
 import Logout from "./pages/Logout";
 import Category from "./pages/Category";
 import OnePost from "./pages/Post";
+import Verify from "./pages/Verify";
 
 axios.defaults.withCredentials = true;
 
@@ -32,6 +33,7 @@ export default function App(){
         <Route path="/login" element={<Login/>}/>
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/upload" element={<Upload/>}/>
+        <Route path="/verify/:id" element={<Verify/>}/>
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     </BrowserRouter>

@@ -8,6 +8,7 @@ import Posts from "./Posts/Posts";
 
 import "./css/main.css";
 import Loading from "./Loading/Loading";
+import Ads from "./Ads";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export default function Main(){
@@ -63,6 +64,7 @@ export default function Main(){
                         {data && data.length === 5 && <a className="col" href={"/p/" + (page + 1)}>{page + 1}</a>}
                     </div>
                 </div>
+                <Ads/>
             </div>
         </>
     );

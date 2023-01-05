@@ -44,6 +44,7 @@ app.post("/api/user/blacklist", blacklist);
 
 app.get("/api/user/profile", profile.get);
 app.post("/api/user/profile", profile.post);
+app.get("/api/user/image", require("./js/user/image"));
 
 app.post("/api/user/nsfw", nsfw);
 app.post("/api/user/gore", gore);

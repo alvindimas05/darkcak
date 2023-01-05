@@ -18,9 +18,7 @@ export default function Profile(props){
 
     function src_check(){
         if(props.src) return props.src;
-        else if(profile.image.data)
-        return `data:${profile.image.contentType};base64,${profile.image.data}`;
-        else return "https://via.placeholder.com/300";
+        else return process.env.REACT_APP_BASE_URL + "/api/user/image?username=" + profile.user;
     }
     return(
         <div className="container" id="profile">
