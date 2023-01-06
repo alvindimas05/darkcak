@@ -20,6 +20,18 @@ module.exports = async function(req, res){
 
     if(!result) return res.err(null);
 
+    var image = null;
+    if(req.files.image){
+        var imgtype = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
+        if(!imgtype.includes(req.files.image.mimetype)) return res.err("Sus files...");
+        if(req.files.image.size > (512 * 1024 * 1024)) return res.err("Maksimum ukuran gambar adalah 512 KB!");
+
+        image = {
+            data:req.files.image.data,
+            contentType:req.files.image.mimetype
+        };
+    }
+
     var time = Math.round(Date.now() / 1000),
     id = await Post.findOne({ post_id:body.post_id });
     id = id.comments.length + 1;
@@ -31,6 +43,7 @@ module.exports = async function(req, res){
                 username:user.username,
                 comment:body.comment,
                 time:time,
+                image:image,
                 reply:[]
             }
         }

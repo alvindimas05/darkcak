@@ -94,9 +94,10 @@ export function Comments(props){
 
         return(
             <div className="comment" key={i}>
-                <div style={{ display:"grid", gridTemplateColumns:"auto 87.5%" }}>
-                    <div className="overflow-hidden pt-2">
-                        <img style={{ width:"40px", borderRadius:"1000px" }} alt="Profile"
+                <div style={{ display:"grid", gridTemplateColumns:"45px auto" }}>
+                    <div className="mt-2 overflow-hidden d-flex justify-content-center align-items-center"
+                    style={{ width:"40px", height:"40px", borderRadius:"1000px" }}>
+                        <img style={{ height:"inherit" }} alt="Profile"
                         src={process.env.REACT_APP_BASE_URL + "/api/user/image?compressed=1&username=" + com.username}/>
                     </div>
                     <div className="ps-1">
