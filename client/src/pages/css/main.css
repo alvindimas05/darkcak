@@ -2,11 +2,15 @@
     font-size:17px;
     font-weight:bold;
 }
-.post-by, .post-laiks, .post-date{
+.post-laiks, .post-date{
     font-size:13px;
     color:gray !important;
 }
-.post-by{font-weight:700}
+.post-by{
+    color:gray;
+    font-size:13px;
+    font-weight:700;
+}
 .post-laiks{
     font-size:13px;
     font-weight:500;
@@ -31,6 +35,10 @@ button{
 }
 .comment-value, .comment-input, .comment-send{
     font-size:13px;
+}
+.comment-input{
+    border:1px solid rgb(100, 100, 100);
+    outline:unset;
 }
 .comment-breply{
     white-space:pre;

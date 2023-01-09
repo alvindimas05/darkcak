@@ -8,7 +8,6 @@ import Posts from "./Posts/Posts";
 
 import "./css/main.css";
 import Loading from "./Loading/Loading";
-import Ads from "./Ads";
 
 var base_url = process.env.REACT_APP_BASE_URL;
 export default function Main(){
@@ -49,7 +48,7 @@ export default function Main(){
     return(
         <>
             <Nav data={data} setData={setData}/>
-            <div className="container px-2 pb-2">
+            <div className="container p-0">
                 <div className="p-2 row" style={{ backgroundColor:"rgba(255, 255, 0, .75)", display:warn ? "" : "none" }}>
                     <div className="col-2 d-flex align-items-center justify-content-center">
                         <i className="fa fa-warning"/>
@@ -58,13 +57,12 @@ export default function Main(){
                 </div>
                 {done ? <Posts data={data} setData={setData}/> : (<Loading/>)}
                 <div className="w-100">
-                    <div className="mt-2 mx-auto my-0 row text-center" style={{ width:"100px" }}>
+                    <div className="mt-2 mx-auto my-0 row text-center text-white" style={{ width:"100px" }}>
                         {page - 1 > 0 && <a className="col" href={"/p/" + (page - 1)}>{page - 1}</a>}
                         <span className="col">{page}</span>
                         {data && data.length === 5 && <a className="col" href={"/p/" + (page + 1)}>{page + 1}</a>}
                     </div>
                 </div>
-                <Ads/>
             </div>
         </>
     );

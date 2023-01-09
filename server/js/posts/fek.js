@@ -65,7 +65,7 @@ async function get(req, res){
     var cookies = req.cookies,
     user = await User.findOne({
         user_id:cookies.user_id
-    });
+    }).select({ username:1 });
 
     if(!user) return res.err(null);
 

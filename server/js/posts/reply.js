@@ -8,7 +8,7 @@ module.exports = async function(req, res){
 
     var user = await User.findOne({
         user_id:req.cookies.user_id
-    });
+    }, { image:0 });
 
     if(!user) return res.err(null);
 

@@ -3,7 +3,7 @@ import cookies from "js-cookie";
 import { Replys, Reply } from "./Reply";
 
 var base_url = process.env.REACT_APP_BASE_URL;
-export async function Send(id, comment, setComment, data, setData, reply, setReply){
+export async function Send(id, image, comment, setComment, data, setData, reply, setReply){
     if(!cookies.get("username")) window.location.href = "/login";
     if(comment.length < 1) return;
     
@@ -31,19 +31,36 @@ export async function Send(id, comment, setComment, data, setData, reply, setRep
             return dat;
         }));
     } else {
-        var cid = await axios.post(base_url + "/api/post/comment", {
-            post_id:id,
-            comment:comment
-        });
+        var fd = new FormData();
+        fd.append("post_id", id);
+        fd.append("comment", comment);
+        if(image) fd.append("image", image);
+
+        var cid = await axios.post(base_url + "/api/post/comment", fd, 
+        { headers:{ "Content-Type":"multipart/form-data" } });
         if(!cid.data.status) return alert(cid.data.message);
         cid = cid.data.id;
 
+        var imgsrc = null,
+        curcom = comment;
+
+        if(image){
+            curcom = curcom.replace("[] ", "");
+            curcom = curcom.replace("[]", "");
+
+            imgsrc = await (new Promise(resolve => {
+                var fr = new FileReader();
+                fr.readAsDataURL(image);
+                fr.onload = () => resolve(fr.result);
+            }));
+        }
         setData(data.map(dat => {
             if(dat.post_id === id){
                 dat.comments.push({
                     comment_id:cid,
                     username:cookies.get("username"),
-                    comment:comment,
+                    comment:curcom,
+                    image:imgsrc,
                     time:"Just now",
                     reply:[]
                 });
@@ -83,7 +100,7 @@ export function Comments(props){
         async function report(){
             var reason = prompt("Give me a good reason (Spam False Report = Warn/Banned)");
             if(!reason || !cookies.get("username")) return;
-            var res = await axios.post(process.env.REACT_APP_BASE_URL + "/api/admin/report", {
+            var res = await axios.post(base_url + "/api/admin/report", {
                 type:2,
                 to:com.username,
                 post_id:props.id,
@@ -98,7 +115,7 @@ export function Comments(props){
                     <div className="mt-2 overflow-hidden d-flex justify-content-center align-items-center"
                     style={{ width:"40px", height:"40px", borderRadius:"1000px" }}>
                         <img style={{ height:"inherit" }} alt="Profile"
-                        src={process.env.REACT_APP_BASE_URL + "/api/user/image?compressed=1&username=" + com.username}/>
+                        src={base_url + "/api/user/image?compressed=1&username=" + com.username}/>
                     </div>
                     <div className="ps-1">
                         <a href={"/u/" + com.username}>
@@ -107,6 +124,11 @@ export function Comments(props){
                         &nbsp;
                         <span className="comment-date">{com.time}</span>
                         <p className="comment-value mb-0">{com.comment}</p>
+                        {com.image && <div className="w-100 my-1">
+                            <img style={{ width:"40%" }} alt="Comment"
+                            src={com.image === true ? `${base_url}/api/post/comimage?post_id=${props.id}&comment_id=${com.comment_id}`
+                            : com.image}/>
+                        </div>}
                         <div className="comment-breply">
                             <span className="breply-reply" onClick={() => Reply(com.username, com.comment_id, setReply, setComment)}>
                                 Reply

@@ -15,6 +15,7 @@ module.exports = async function(req, res){
     for(j in result.comments){
         var ctime = Math.round(Date.now() / 1000) - result.comments[j].time;
         result.comments[j].time = getTime(ctime);
+        result.comments[j].image = !!result.comments[j].image;
 
         for(k in result.comments[j].reply){
             var rtime = Math.round(Date.now() / 1000) - result.comments[j].reply[k].time

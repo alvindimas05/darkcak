@@ -8,7 +8,7 @@ module.exports = async function(req, res){
 
     var user = await User.findOne({
         user_id:req.cookies.user_id
-    });
+    }, { image:0 });
 
     if(!user) return res.err(null);
     if(user.comldown) return res.err("Cooldown...");
@@ -21,11 +21,13 @@ module.exports = async function(req, res){
     if(!result) return res.err(null);
 
     var image = null;
-    if(req.files.image){
+    if(req.files.image && body.comment.includes("[]")){
         var imgtype = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
         if(!imgtype.includes(req.files.image.mimetype)) return res.err("Sus files...");
-        if(req.files.image.size > (512 * 1024 * 1024)) return res.err("Maksimum ukuran gambar adalah 512 KB!");
+        if(req.files.image.size > (256 * 1024 * 1024)) return res.err("Maksimum ukuran gambar adalah 256 KB!");
 
+        body.comment = body.comment.replace("[] ", "");
+        body.comment = body.comment.replace("[]", "");
         image = {
             data:req.files.image.data,
             contentType:req.files.image.mimetype

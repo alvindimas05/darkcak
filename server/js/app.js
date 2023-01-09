@@ -9,8 +9,7 @@ app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(cookieParser());
-app.use(cors({ credentials:true, origin:["http://localhost:3000", "http://192.168.1.5:3000",
-"http://ancribat.my.id", "https://darkcak.xyz"] }));
+app.use(cors({ credentials:true, origin:["http://localhost:3000", "http://192.168.1.5:3000", "https://darkcak.xyz"] }));
 app.use(fileUpload({ limits:{ fileSize:5 * 1024 * 1024 } }));
 
 app.use(express.static("public"));

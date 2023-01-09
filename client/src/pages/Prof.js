@@ -119,7 +119,7 @@ export default function Prof(){
             <div className="container">
                 <div className="mt-3">
                     <span>Profil :</span>
-                    <input onInput={preview_image} className="w-100" accept=".jpg,.jpeg,.png" type="file"/>
+                    <input onInput={preview_image} className="w-100" accept=".jpg,.jpeg,.png,.gif" type="file"/>
                 </div>
                 <div className="mt-3">
                     <span>Description :</span>

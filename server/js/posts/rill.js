@@ -52,7 +52,7 @@ async function get(req, res){
     var cookies = req.cookies,
     user = await User.findOne({
         user_id:cookies.user_id
-    });
+    }, { image:0 });
 
     if(!user) return res.err(null);
 

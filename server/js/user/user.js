@@ -19,11 +19,11 @@ async function create(req, res){
 
     var result = await User.findOne({
         username:body.username
-    });
+    }, { image:0 });
 
     if(result) return res.err("Username sudah digunakan!");
 
-    var result = await User.findOne({ email:body.email });
+    var result = await User.findOne({ email:body.email }, { image:0 });
     if(result) return res.err("Kamu tidak boleh membuat lebih dari 1 akun!");
 
     if(!isEmailValid(body.email)) return res.err("Email tidak valid!");
@@ -72,7 +72,7 @@ async function login(req, res){
     var result = await User.findOne({
         username:body.username,
         password:body.password
-    });
+    }, { image:0 });
 
     if(result){
         res.cookie("user_id", result.user_id, {

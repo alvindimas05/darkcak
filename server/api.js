@@ -58,6 +58,7 @@ app.get("/api/post/file", file);
 
 app.post("/api/post/comment", comment);
 app.post("/api/post/reply", reply);
+app.get("/api/post/comimage", require("./js/posts/comimage"));
 
 app.post("/api/post/rill", rill.post);
 app.get("/api/post/rill", rill.get);

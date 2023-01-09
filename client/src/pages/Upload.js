@@ -85,7 +85,7 @@ export default function Upload(){
             fd.append("title", title);
 
             var res = await axios.post(base_url + "/api/post/create", fd,
-            { headers:{ "Content-Type":"multipart/form-data"} });
+            { headers:{ "Content-Type":"multipart/form-data" } });
 
             if(res.data.status) window.location.href = "/";
             else alert(res.data.message);
@@ -133,7 +133,7 @@ export default function Upload(){
                 </div>
                 <div className="mt-3">
                     <span>Gambar :</span>
-                    <input className="w-100" onChange={handleFile} type="file" accept=".jpg,.jpeg,.png"/>
+                    <input className="w-100" onChange={handleFile} type="file" accept=".jpg,.jpeg,.png,.gif"/>
                 </div>
                 <div className="mt-3">
                     <span>File Preview :</span>

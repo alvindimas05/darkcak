@@ -43,6 +43,7 @@ export default function Main(){
         })();
     }, [done, params]);
 
+    console.log(data);
     return(
         <>
             <Nav data={data} setData={setData}/>

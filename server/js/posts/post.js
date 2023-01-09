@@ -12,7 +12,7 @@ async function create(req, res){
     var cookies = req.cookies,
     result = await User.findOne({
         user_id:cookies.user_id
-    });
+    }, { image:0 });
     
     if(!result) return res.err(null);
 
@@ -46,8 +46,8 @@ async function create(req, res){
         time:time
     }).save();
 
-    await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { cooldown:true });
-    setTimeout(async () => await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { cooldown:false }), 45 * 60 * 1000)
+    await User.updateOne({ user_id:req.cookies.user_id }, { cooldown:true });
+    setTimeout(async () => await User.updateOne({ user_id:req.cookies.user_id }, { cooldown:false }), 45 * 60 * 1000)
     res.json({ status:true });
 }
 

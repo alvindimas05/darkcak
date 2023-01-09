@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb://alvindimas:adp050107@ancritbat.my.id", { dbName:"darkcak" });
+mongoose.connect("mongodb://alvindimas:adp050107@darkcak.xyz", { dbName:"darkcak" });
 
 const userSchema = mongoose.Schema({
     user_id:String,

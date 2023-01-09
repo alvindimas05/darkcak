@@ -7,7 +7,7 @@ async function nsfw(req, res){
 
     if(!params || !req.cookies) res.err(null);
 
-    await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { nsfw:body.check });
+    await User.updateOne({ user_id:req.cookies.user_id }, { nsfw:body.check });
     res.json({ status:true });
 }
 
@@ -17,7 +17,7 @@ async function gore(req, res){
 
     if(!params || !req.cookies) res.err(null);
 
-    await User.findOneAndUpdate({ user_id:req.cookies.user_id }, { gore:body.check });
+    await User.updateOne({ user_id:req.cookies.user_id }, { gore:body.check });
     res.json({ status:true });
 }
 

@@ -7,7 +7,7 @@ async function post(req, res){
     if(!params && !req.cookies) return res.err(null);
 
     var cookies = req.cookies,
-    user = await User.findOne({ user_id:cookies.user_id });
+    user = await User.findOne({ user_id:cookies.user_id }, { image:0 });
     if(!user) return res.err(null);
 
     if(body.description.length > 200) return res.err("Deskripsi terlalu panjang!");

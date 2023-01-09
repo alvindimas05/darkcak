@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Rill, Fek } from "./Rill Fek";
 import { Send, Comments } from "./Comment";
 import axios from "axios";
@@ -10,7 +10,10 @@ export default function Post(props){
     setData = props.setData;
     
     const [comment, setComment] = useState(""),
-    [reply, setReply] = useState(0);
+    [image, setImage] = useState(null),
+    [reply, setReply] = useState(0),
+
+    imgref = useRef(null);
 
     function btn_comment(){
         if(props.one) return;
@@ -21,6 +24,15 @@ export default function Post(props){
             }
             return da;
         }));
+    }
+
+    function handleImage(e){
+        var imgtype = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
+    
+        if(imgtype.includes(e.target.files[0].type)){
+            setImage(e.target.files[0]);
+            alert("Added image to comment!");
+        } else alert("Sus files...");
     }
 
     async function report(){
@@ -36,7 +48,7 @@ export default function Post(props){
     }
 
     return(
-        <div className="post mt-2">
+        <div className="post mt-2" style={{ padding:".75rem" }}>
             <div>
                 {dat.isImage ? 
                     <img onClick={() => window.location.href = "/g/" + dat.post_id} className="w-100" alt="Post" 
@@ -82,9 +94,16 @@ export default function Post(props){
             <div className="comments py-1" style={{ display:dat.display || props.one ? "block" : "none" }}>
                 <Comments id={dat.post_id} comments={dat.comments} reply={reply} setReply={setReply} data={data} setData={setData} setComment={setComment}/>
                 <div className="row gx-2 mt-2">
-                    <input onInput={e => setComment(e.target.value)} value={comment} placeholder="Comment" type="text" className="col-9 comment-input"/>
+                    <input onInput={handleImage} ref={imgref} type="file" style={{ display:"none" }}
+                    accept=".jpg,.jpeg,.png,.gif"/>
+                    <input onInput={e => {
+                        if(e.target.value.includes("[]") && !image)
+                        imgref.current.click();
+                        else if(!e.target.value.includes("[]")) setImage(null);
+                        setComment(e.target.value);
+                    }} value={comment} placeholder="Comment" type="text" className="col-9 comment-input"/>
                     <div className="col-3" align="center">
-                        <button className="btn btn-dark px-3 comment-send" onClick={async () => Send(dat.post_id, comment, setComment, data, setData, reply, setReply)}>Send</button>
+                        <button className="btn btn-dark px-3 comment-send" onClick={async () => Send(dat.post_id, image, comment, setComment, data, setData, reply, setReply)}>Send</button>
                     </div>
                 </div>
             </div>
