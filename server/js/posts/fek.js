@@ -1,13 +1,6 @@
 const { User, Post } = require("../mongoose");
 
-/**
- * Fungsi untuk menambah fek
- * 
- * Body : user_id, post_id
- * Response : status
- */
-
- async function post(req, res){
+async function post(req, res){
     var body = req.body,
     params = ["post_id"].check(body);
 

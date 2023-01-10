@@ -7,7 +7,7 @@ module.exports = async function(req, res){
 
     if(!params) return res.err(null);
     
-    var result = await Post.findOne({ post_id:query.post_id }, { _id:0, user_id:0, image:0 }).lean();
+    var result = await Post.findOne({ post_id:query.post_id }, { _id:0, user_id:0, file:0 }).lean();
 
     if(!result) return res.err(null);
 

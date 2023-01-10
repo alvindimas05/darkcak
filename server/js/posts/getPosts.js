@@ -1,4 +1,4 @@
-const { User, Post, Admin } = require("../mongoose"),
+const { User, Post } = require("../mongoose"),
 getTime = require("../time");
 
 module.exports = async function(cookies, page, options){

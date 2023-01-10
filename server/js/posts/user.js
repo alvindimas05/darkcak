@@ -1,4 +1,3 @@
-const getTime = require("../time");
 const getPosts = require("./getPosts");
 
 module.exports = async function(req, res){

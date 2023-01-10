@@ -1,6 +1,5 @@
 const { User, Post } = require("../mongoose"),
-getTime = require("../time");
-const getPosts = require("./getPosts");
+getPosts = require("./getPosts");
 
 async function create(req, res){
     var body = req.body,

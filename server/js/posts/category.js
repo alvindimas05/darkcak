@@ -1,22 +1,4 @@
-const { Post, User } = require("../mongoose"),
-getTime = require("../time");
 const getPosts = require("./getPosts");
-
-var category = [
-    "meme",
-    "politic",
-    "news",
-    "anime",
-    "korean",
-    "game",
-    "encyclopedia",
-    "comic",
-    "ask",
-    "sport",
-    "animals",
-    "nsfw",
-    "gore"
-];
 
 module.exports = async function(req, res){
     var query = req.query,
